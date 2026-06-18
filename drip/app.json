@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "Drip",
+    "slug": "drip",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "drip",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#080b16",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#080b16",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#080b16",
+          "image": "./assets/icon.png",
+          "imageWidth": 120
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Drip uses your photos to save Drip cards you create.",
+          "savePhotosPermission": "Drip saves Drip cards to your photo library."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
