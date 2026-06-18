@@ -4,7 +4,13 @@ export type DripCategory =
   | 'REFLECTION'
   | 'QUESTION'
   | 'FACT'
-  | 'INSIGHT';
+  | 'INSIGHT'
+  | 'HAPPY'
+  | 'GRATEFUL'
+  | 'WISE'
+  | 'CURIOUS'
+  | 'DEEP'
+  | 'ACTION';
 
 export interface Drip {
   id: number;

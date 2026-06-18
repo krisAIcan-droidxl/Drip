@@ -26,7 +26,13 @@ export type DripCategory =
   | 'REFLECTION'
   | 'QUESTION'
   | 'FACT'
-  | 'INSIGHT';
+  | 'INSIGHT'
+  | 'HAPPY'
+  | 'GRATEFUL'
+  | 'WISE'
+  | 'CURIOUS'
+  | 'DEEP'
+  | 'ACTION';
 
 // Converted from the design's oklch(0.80 ...) category accents to sRGB hex,
 // since React Native doesn't support the oklch() color function.
@@ -37,6 +43,12 @@ export const CATEGORY_ACCENT: Record<DripCategory, string> = {
   QUESTION: '#85c8e6',
   FACT: '#97c2f0',
   INSIGHT: '#cab1e8',
+  HAPPY: '#f7d36f',
+  GRATEFUL: '#f2c3a7',
+  WISE: '#d8c9ff',
+  CURIOUS: '#93d8f4',
+  DEEP: '#a8b9ff',
+  ACTION: '#9fd9aa',
 };
 
 export const CATEGORY_PROMPT: Record<DripCategory, string> = {
@@ -46,6 +58,12 @@ export const CATEGORY_PROMPT: Record<DripCategory, string> = {
   FACT: 'Did you know',
   INSIGHT: 'Worth remembering',
   QUOTE: 'Words to keep',
+  HAPPY: 'A mood lift',
+  GRATEFUL: 'Notice the good',
+  WISE: 'A wise note',
+  CURIOUS: 'Stay curious',
+  DEEP: 'Go deeper',
+  ACTION: 'One small move',
 };
 
 export const ONBOARDING_ACCENTS = ['#97c1f7', '#cbafed', '#7fcfc4'] as const;

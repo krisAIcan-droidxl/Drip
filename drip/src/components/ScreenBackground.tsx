@@ -19,9 +19,14 @@ export function ScreenBackground({ children }: { children: ReactNode }) {
             <Stop offset="0" stopColor="#9678dc" stopOpacity={0.24} />
             <Stop offset="1" stopColor="#9678dc" stopOpacity={0} />
           </RadialGradient>
+          <RadialGradient id="orbBottomWash" cx="50%" cy="50%" r="50%">
+            <Stop offset="0" stopColor="#7896eb" stopOpacity={0.1} />
+            <Stop offset="1" stopColor="#7896eb" stopOpacity={0} />
+          </RadialGradient>
         </Defs>
-        <Circle cx={50} cy={20} r={170} fill="url(#orbBlue)" />
-        <Circle cx="92%" cy="88%" r={160} fill="url(#orbPurple)" />
+        <Circle cx="12%" cy="-2%" r={230} fill="url(#orbBlue)" />
+        <Circle cx="94%" cy="88%" r={210} fill="url(#orbPurple)" />
+        <Circle cx="50%" cy="120%" r={320} fill="url(#orbBottomWash)" />
       </Svg>
       {children}
     </View>

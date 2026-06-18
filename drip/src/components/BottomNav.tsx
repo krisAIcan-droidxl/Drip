@@ -1,3 +1,4 @@
+import { BlurView } from 'expo-blur';
 import type { BottomTabBarProps } from 'expo-router/build/react-navigation/bottom-tabs';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -25,6 +26,7 @@ const INACTIVE = TEXT_DIM(0.4);
 export function BottomNav({ state, navigation }: BottomTabBarProps) {
   return (
     <View style={styles.bar}>
+      <BlurView intensity={22} tint="dark" style={[StyleSheet.absoluteFill, styles.blur]} />
       {state.routes.map((route, index) => {
         const focused = state.index === index;
         const Icon = ICONS[route.name as keyof typeof ICONS];
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     bottom: 24,
     height: 66,
     borderRadius: 24,
-    backgroundColor: 'rgba(18,22,40,.86)',
+    backgroundColor: 'rgba(18,22,40,.72)',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,.1)',
     flexDirection: 'row',
@@ -66,6 +68,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 30,
     shadowOffset: { width: 0, height: 16 },
+    overflow: 'hidden',
+  },
+  blur: {
+    borderRadius: 24,
   },
   item: {
     alignItems: 'center',

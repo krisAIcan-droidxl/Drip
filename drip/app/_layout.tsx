@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useDrip } from '@/src/features/drip/useDrip';
+import { AnalyticsEvents } from '@/src/services/analytics/events';
+import { bootstrapAuth } from '@/src/services/supabase/auth';
 import { FONT_MAP } from '@/src/theme/fonts';
 
 SplashScreen.preventAutoHideAsync();
@@ -14,6 +16,11 @@ export default function RootLayout() {
   const [fontsLoaded] = useFonts(FONT_MAP);
   const hasHydrated = useDrip((s) => s.hasHydrated);
   const ready = fontsLoaded && hasHydrated;
+
+  useEffect(() => {
+    AnalyticsEvents.appOpened();
+    void bootstrapAuth();
+  }, []);
 
   useEffect(() => {
     if (ready) {
