@@ -7,6 +7,9 @@
 - Backend plan: `docs/BACKEND_PLAN.md`
 - Environment example: `.env.example`
 - Supabase migration: `supabase/migrations/001_initial_schema.sql`
+- Supabase linked project: `zaloxeusmmfjoilwbrgy`
+- Supabase remote migration applied: `001_initial_schema.sql`
+- Supabase anonymous auth enabled and verified.
 - Domain types: `src/types/domain.ts`
 - Environment config: `src/config/env.ts`
 - API wrapper: `src/services/api/client.ts`
@@ -34,7 +37,6 @@ No screens were removed. The current Expo Router app remains the active UI surfa
 
 ## Still Missing Before Production
 
-- Real Supabase project configuration.
 - Auth screens/session handling beyond anonymous bootstrap.
 - Server-backed favorites/history/streak sync.
 - RevenueCat SDK installation and real entitlement reads.

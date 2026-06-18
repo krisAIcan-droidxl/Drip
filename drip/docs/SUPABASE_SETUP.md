@@ -1,13 +1,25 @@
 # Supabase Setup
 
-## 1. Create Project
+## Current Project
 
-Create a Supabase project and copy:
+The local app is linked to the Supabase project:
 
-- Project URL
-- Anon public key
+- Name: `Drip`
+- Project ref: `zaloxeusmmfjoilwbrgy`
+- URL: `https://zaloxeusmmfjoilwbrgy.supabase.co`
 
-Add them to `.env`:
+Migration status has been verified with `supabase migration list`: local `001` matches remote `001`.
+
+Anonymous auth has been enabled and verified with a real `signInAnonymously()` call. The app bootstrap writes to `users`, `profiles`, and `user_streaks` have also been verified against RLS.
+
+## 1. Project Env
+
+The local `.env` contains:
+
+- `EXPO_PUBLIC_SUPABASE_URL`
+- `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+
+For another machine, create `.env` from `.env.example`:
 
 ```bash
 EXPO_PUBLIC_SUPABASE_URL=...
@@ -18,19 +30,19 @@ Do not put service-role keys in the Expo app.
 
 ## 2. Apply Schema
 
-Apply:
+Already applied to the linked remote project:
 
 ```bash
 supabase db push
 ```
 
-or run `supabase/migrations/001_initial_schema.sql` through the Supabase SQL editor.
+The schema source is `supabase/migrations/001_initial_schema.sql`.
 
-## 3. Enable Anonymous Auth
+## 3. Anonymous Auth
 
-The current MVP bootstrap uses anonymous auth so users can start without a login screen.
+The current MVP bootstrap uses anonymous auth so users can start without a login screen. This is enabled for the linked remote project.
 
-In Supabase Dashboard:
+If this is recreated in another project, enable it in Supabase Dashboard:
 
 - Go to Authentication
 - Enable anonymous sign-ins

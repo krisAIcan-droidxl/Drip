@@ -35,10 +35,13 @@ export async function getCurrentSession(): Promise<AuthSession> {
 async function upsertUserBootstrapRows(user: User): Promise<void> {
   const supabase = requireSupabaseClient();
 
-  await supabase.from('users').upsert({
-    id: user.id,
-    email: user.email ?? null,
-  });
+  await supabase.from('users').upsert(
+    {
+      id: user.id,
+      email: user.email ?? null,
+    },
+    { ignoreDuplicates: true }
+  );
 
   await supabase.from('profiles').upsert({
     user_id: user.id,
@@ -47,12 +50,6 @@ async function upsertUserBootstrapRows(user: User): Promise<void> {
 
   await supabase.from('user_streaks').upsert({
     user_id: user.id,
-  });
-
-  await supabase.from('subscriptions').upsert({
-    user_id: user.id,
-    plan: 'free',
-    status: 'inactive',
   });
 }
 
