@@ -9,6 +9,8 @@ import {
   canViewFullHistory,
 } from '@/src/features/monetization/entitlements';
 import { purchasePackage, restorePurchases, type PlanId } from '@/src/features/monetization/revenueCat';
+import { resolvePremiumEntitlement, subscriptionPlanToLegacyPlan } from '@/src/services/premium/entitlements';
+import { syncLocalDripStateToSupabase } from '@/src/services/supabase/sync';
 import { ALL_DRIPS, drawNextDripId, getDripById, isYesterday, todayKey } from './dripService';
 import type { Drip, HistoryEntry } from './dripTypes';
 
@@ -33,6 +35,12 @@ interface DripState {
   currentDripId: number | null;
 
   setHasHydrated: (v: boolean) => void;
+  mergeRemoteState: (state: {
+    favIds: number[];
+    history: HistoryEntry[];
+    streak: number;
+    lastActiveDateKey: string | null;
+  }) => void;
   finishOnboarding: () => void;
   requestDrip: () => { ok: true; drip: Drip } | { ok: false; reason: 'quota' };
   toggleFavorite: (id: number) => boolean;
@@ -40,10 +48,20 @@ interface DripState {
   selectPlan: (plan: PlanId) => void;
   subscribe: () => Promise<boolean>;
   restore: () => Promise<boolean>;
+  refreshPremiumEntitlement: () => Promise<boolean>;
 
   currentDrip: () => Drip | undefined;
   favoriteDrips: () => Drip[];
   todaysUsage: () => number;
+}
+
+function queueSupabaseSync(state: Pick<DripState, 'favIds' | 'history' | 'streak' | 'lastActiveDateKey'>) {
+  void syncLocalDripStateToSupabase({
+    favIds: state.favIds,
+    history: state.history,
+    streak: state.streak,
+    lastActiveDateKey: state.lastActiveDateKey,
+  });
 }
 
 export const useDrip = create<DripState>()(
@@ -69,6 +87,16 @@ export const useDrip = create<DripState>()(
       currentDripId: null,
 
       setHasHydrated: (v) => set({ hasHydrated: v }),
+
+      mergeRemoteState: (remote) => {
+        set({
+          favIds: remote.favIds,
+          history: remote.history,
+          streak: remote.streak,
+          lastActiveDateKey: remote.lastActiveDateKey,
+          totalOpened: Math.max(get().totalOpened, remote.history.length),
+        });
+      },
 
       finishOnboarding: () => set({ onboarded: true }),
 
@@ -111,6 +139,7 @@ export const useDrip = create<DripState>()(
         });
 
         trackEvent('drip_viewed', { category: drip.category });
+        queueSupabaseSync(get());
         return { ok: true, drip };
       },
 
@@ -120,6 +149,7 @@ export const useDrip = create<DripState>()(
         if (has) {
           set({ favIds: s.favIds.filter((x) => x !== id) });
           trackEvent('drip_unfavorited', { dripId: id });
+          queueSupabaseSync(get());
           return true;
         }
         if (!canAddFavorite(s.isPremium, s.favIds.length)) {
@@ -127,6 +157,7 @@ export const useDrip = create<DripState>()(
         }
         set({ favIds: [id, ...s.favIds] });
         trackEvent('drip_favorited', { dripId: id });
+        queueSupabaseSync(get());
         return true;
       },
 
@@ -149,6 +180,7 @@ export const useDrip = create<DripState>()(
         const result = await purchasePackage(s.plan);
         if (result.success) {
           set({ isPremium: result.isPremium });
+          void get().refreshPremiumEntitlement();
           trackEvent('purchase_completed', { plan: s.plan });
         }
         return result.success;
@@ -157,7 +189,18 @@ export const useDrip = create<DripState>()(
       restore: async () => {
         const result = await restorePurchases();
         set({ isPremium: result.isPremium });
+        void get().refreshPremiumEntitlement();
         return result.isPremium;
+      },
+
+      refreshPremiumEntitlement: async () => {
+        const result = await resolvePremiumEntitlement();
+        const entitlement = result.entitlement;
+        set({
+          isPremium: entitlement.isPremium,
+          plan: subscriptionPlanToLegacyPlan(entitlement.plan),
+        });
+        return entitlement.isPremium;
       },
 
       currentDrip: () => {

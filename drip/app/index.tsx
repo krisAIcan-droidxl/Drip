@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 
 import { DropletIcon } from '@/src/components/DropletIcon';
+import { RadialGlow } from '@/src/components/RadialGlow';
 import { ScreenBackground } from '@/src/components/ScreenBackground';
 import { useDrip } from '@/src/features/drip/useDrip';
 import { TEXT_DIM } from '@/src/theme/colors';
@@ -45,7 +46,9 @@ export default function SplashRoute() {
                 transform: [{ scale: glow.interpolate({ inputRange: [0, 1], outputRange: [1, 1.12] }) }],
               },
             ]}
-          />
+          >
+            <RadialGlow width={190} color="#9db4f0" opacity={0.9} />
+          </Animated.View>
           <Animated.View
             style={{
               transform: [{ translateY: float.interpolate({ inputRange: [0, 1], outputRange: [0, -8] }) }],
@@ -78,8 +81,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 190,
     height: 190,
-    borderRadius: 95,
-    backgroundColor: 'rgba(157,180,240,.35)',
   },
   wordmark: {
     fontFamily: SERIF,

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { CheckIcon, CloseIcon, DiamondIcon, LockIcon } from '@/src/components/Icons';
+import { RadialGlow } from '@/src/components/RadialGlow';
 import { ScreenBackground } from '@/src/components/ScreenBackground';
 import { useDrip } from '@/src/features/drip/useDrip';
 import { GLASS_BG_STRONG, GLASS_BORDER, GOLD, GOLD_BUTTON_GRADIENT, GOLD_DARK, TEXT_DIM, hexToRgba } from '@/src/theme/colors';
@@ -61,7 +62,9 @@ export default function PremiumScreen() {
 
         <View style={styles.hero}>
           <View style={styles.diamondWrap}>
-            <View style={styles.diamondGlow} />
+            <View style={styles.diamondGlow}>
+              <RadialGlow width={84} color={GOLD} opacity={0.8} />
+            </View>
             <DiamondIcon size={42} />
           </View>
           <Text style={styles.heroTitle}>Drip Premium</Text>
@@ -180,8 +183,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 84,
     height: 84,
-    borderRadius: 42,
-    backgroundColor: 'rgba(244,184,96,.45)',
   },
   heroTitle: {
     fontFamily: SERIF,

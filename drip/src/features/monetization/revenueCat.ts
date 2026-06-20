@@ -1,23 +1,36 @@
-// Stand-in for a real RevenueCat integration. Shaped like the real SDK
-// (purchasePackage / restorePurchases resolving to an entitlement result)
-// so swapping in `react-native-purchases` later only touches this file.
+import { revenueCatService } from '@/src/services/revenuecat';
+
 export type PlanId = 'monthly' | 'yearly';
 
 export interface PurchaseResult {
   success: boolean;
   isPremium: boolean;
+  error?: string;
 }
 
 export async function purchasePackage(plan: PlanId): Promise<PurchaseResult> {
-  await new Promise((r) => setTimeout(r, 900));
-  return { success: true, isPremium: true };
+  try {
+    const entitlement = await revenueCatService.purchase(plan === 'monthly' ? 'premium_monthly' : 'premium_yearly');
+    return { success: entitlement.isPremium, isPremium: entitlement.isPremium };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Purchase failed.';
+    if (__DEV__) console.warn('[revenuecat] purchase failed', message);
+    return { success: false, isPremium: false, error: message };
+  }
 }
 
 export interface RestoreResult {
   isPremium: boolean;
+  error?: string;
 }
 
 export async function restorePurchases(): Promise<RestoreResult> {
-  await new Promise((r) => setTimeout(r, 700));
-  return { isPremium: false };
+  try {
+    const entitlement = await revenueCatService.restore();
+    return { isPremium: entitlement.isPremium };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Restore failed.';
+    if (__DEV__) console.warn('[revenuecat] restore failed', message);
+    return { isPremium: false, error: message };
+  }
 }

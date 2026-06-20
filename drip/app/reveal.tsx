@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { DropletIcon } from '@/src/components/DropletIcon';
 import { BackArrowIcon, HeartIcon, ShareIcon } from '@/src/components/Icons';
+import { RadialGlow } from '@/src/components/RadialGlow';
 import { ScreenBackground } from '@/src/components/ScreenBackground';
 import { getDripById } from '@/src/features/drip/dripService';
 import { useDrip } from '@/src/features/drip/useDrip';
@@ -72,7 +73,9 @@ export default function RevealScreen() {
         </View>
 
         <View style={styles.cardWrap}>
-          <View style={[styles.glow, { backgroundColor: hexToRgba(accent, 0.5) }]} />
+          <View style={styles.glow}>
+            <RadialGlow width={300} color={accent} opacity={0.85} />
+          </View>
           <View style={styles.card}>
             <View style={[styles.cardTopLine, { backgroundColor: accent }]} />
             <DropletIcon size={28} color={accent} />
@@ -154,8 +157,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 300,
     height: 300,
-    borderRadius: 150,
-    opacity: 0.5,
   },
   card: {
     width: '100%',

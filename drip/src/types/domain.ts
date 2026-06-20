@@ -88,6 +88,8 @@ export interface AppConfig {
   supabaseAnonKey?: string;
   revenueCatApiKeyIos?: string;
   revenueCatApiKeyAndroid?: string;
+  revenueCatEntitlementId?: string;
+  revenueCatOfferingId?: string;
   openAiProxyUrl?: string;
   analyticsProvider?: string;
 }

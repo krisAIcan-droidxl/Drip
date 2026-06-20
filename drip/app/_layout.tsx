@@ -7,7 +7,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useDrip } from '@/src/features/drip/useDrip';
 import { AnalyticsEvents } from '@/src/services/analytics/events';
+import { revenueCatService } from '@/src/services/revenuecat';
 import { bootstrapAuth } from '@/src/services/supabase/auth';
+import { restoreSupabaseDripState, syncLocalDripStateToSupabase } from '@/src/services/supabase/sync';
 import { FONT_MAP } from '@/src/theme/fonts';
 
 SplashScreen.preventAutoHideAsync();
@@ -19,8 +21,34 @@ export default function RootLayout() {
 
   useEffect(() => {
     AnalyticsEvents.appOpened();
-    void bootstrapAuth();
   }, []);
+
+  useEffect(() => {
+    if (!hasHydrated) return;
+    void bootstrapAuth().then(async (result) => {
+      if (result.status !== 'signed_in') return;
+      await revenueCatService.configure(result.session.user?.id);
+      await useDrip.getState().refreshPremiumEntitlement();
+      const state = useDrip.getState();
+      const localSnapshot = {
+        favIds: state.favIds,
+        history: state.history,
+        streak: state.streak,
+        lastActiveDateKey: state.lastActiveDateKey,
+      };
+      const restore = await restoreSupabaseDripState(localSnapshot);
+      if (restore.state) {
+        useDrip.getState().mergeRemoteState(restore.state);
+      }
+      const merged = useDrip.getState();
+      void syncLocalDripStateToSupabase({
+        favIds: merged.favIds,
+        history: merged.history,
+        streak: merged.streak,
+        lastActiveDateKey: merged.lastActiveDateKey,
+      });
+    });
+  }, [hasHydrated]);
 
   useEffect(() => {
     if (ready) {

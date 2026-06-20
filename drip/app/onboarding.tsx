@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { DropletIcon } from '@/src/components/DropletIcon';
+import { RadialGlow } from '@/src/components/RadialGlow';
 import { ScreenBackground } from '@/src/components/ScreenBackground';
 import { useDrip } from '@/src/features/drip/useDrip';
-import { LIGHT_BUTTON_GRADIENT, ONBOARDING_ACCENTS, TEXT_DIM, hexToRgba } from '@/src/theme/colors';
+import { LIGHT_BUTTON_GRADIENT, ONBOARDING_ACCENTS, TEXT_DIM } from '@/src/theme/colors';
 import { SANS, SANS_SEMIBOLD, SERIF } from '@/src/theme/fonts';
 
 const STEPS = [
@@ -60,7 +61,9 @@ export default function OnboardingScreen() {
 
         <View style={styles.illoWrap}>
           <View style={styles.illo}>
-            <View style={[styles.glow, { backgroundColor: hexToRgba(accent, 0.45) }]} />
+            <View style={styles.glow}>
+              <RadialGlow width={230} color={accent} opacity={0.7} />
+            </View>
             <View style={styles.ringSmall} />
             <View style={styles.ringLarge} />
             <DropletIcon size={58} color="#eef2ff" />
@@ -128,7 +131,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 230,
     height: 230,
-    borderRadius: 115,
   },
   ringSmall: {
     position: 'absolute',

@@ -4,6 +4,7 @@ import { Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-nativ
 
 import { DropletIcon } from '@/src/components/DropletIcon';
 import { FlameIcon } from '@/src/components/Icons';
+import { RadialGlow } from '@/src/components/RadialGlow';
 import { ScreenBackground } from '@/src/components/ScreenBackground';
 import { useDrip } from '@/src/features/drip/useDrip';
 import { GLASS_BG_STRONG, GLASS_BORDER, TEXT_DIM } from '@/src/theme/colors';
@@ -94,7 +95,9 @@ export default function HomeScreen() {
             <PulseRing delayMs={0} />
             <PulseRing delayMs={1100} />
             <PulseRing delayMs={2200} />
-            <View style={styles.outerGlow} />
+            <View style={styles.outerGlow}>
+              <RadialGlow width={200} color="#9db4f0" opacity={0.8} />
+            </View>
             <View style={styles.glassCircle}>
               <DropletIcon size={40} color="#eef2ff" />
               <Text style={styles.tapLabel}>Tap for your Drip</Text>
@@ -181,8 +184,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 200,
     height: 200,
-    borderRadius: 100,
-    backgroundColor: 'rgba(157,180,240,.32)',
   },
   glassCircle: {
     width: 182,

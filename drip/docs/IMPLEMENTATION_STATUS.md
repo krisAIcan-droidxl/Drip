@@ -9,7 +9,13 @@
 - Supabase migration: `supabase/migrations/001_initial_schema.sql`
 - Supabase linked project: `zaloxeusmmfjoilwbrgy`
 - Supabase remote migration applied: `001_initial_schema.sql`
+- Supabase sync migrations applied: `002_curated_drips_sync_support.sql`, `003_history_local_entry_constraint.sql`
 - Supabase anonymous auth enabled and verified.
+- Local Zustand sync implemented for history, favorites, and streak.
+- Server-backed premium entitlement refresh implemented from Supabase with RevenueCat fallback.
+- RevenueCat SDK installed and wired for configure, purchase, restore, offerings, and entitlement fallback.
+- RevenueCat webhook Edge Function added: `supabase/functions/revenuecat-webhook/index.ts`
+- RevenueCat webhook Edge Function deployed to Supabase and smoke-tested with a `TEST` event.
 - Domain types: `src/types/domain.ts`
 - Environment config: `src/config/env.ts`
 - API wrapper: `src/services/api/client.ts`
@@ -18,7 +24,7 @@
 - Supabase repositories: `src/services/supabase/repositories.ts`
 - Storage layer: `src/services/storage/index.ts`
 - Analytics event layer: `src/services/analytics/events.ts`
-- RevenueCat service stub: `src/services/revenuecat/index.ts`
+- RevenueCat service: `src/services/revenuecat/index.ts`
 - OpenAI drip generator stub: `src/services/openai/dripGenerator.ts`
 - Notification stub: `src/services/notifications/index.ts`
 - Safe error helpers: `src/security/safeErrors.ts`
@@ -38,9 +44,9 @@ No screens were removed. The current Expo Router app remains the active UI surfa
 ## Still Missing Before Production
 
 - Auth screens/session handling beyond anonymous bootstrap.
-- Server-backed favorites/history/streak sync.
-- RevenueCat SDK installation and real entitlement reads.
-- RevenueCat webhook handler.
+- Multi-device conflict rules beyond simple union/max merge.
+- Configure RevenueCat API keys in `.env`.
+- Configure RevenueCat Dashboard webhook URL and Authorization header.
 - AI drip Supabase Edge Function.
 - Analytics SDK provider implementation.
 - Automated test framework and CI.

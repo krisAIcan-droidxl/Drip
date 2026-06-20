@@ -1,12 +1,19 @@
+import { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { ScreenBackground } from '@/src/components/ScreenBackground';
+import { getDripById } from '@/src/features/drip/dripService';
+import type { Drip } from '@/src/features/drip/dripTypes';
 import { useDrip } from '@/src/features/drip/useDrip';
 import { CATEGORY_ACCENT, TEXT_DIM } from '@/src/theme/colors';
 import { SANS, SERIF, SERIF_ITALIC } from '@/src/theme/fonts';
 
 export default function FavoritesScreen() {
-  const favorites = useDrip((s) => s.favoriteDrips());
+  const favIds = useDrip((s) => s.favIds);
+  const favorites = useMemo(
+    () => favIds.map((id) => getDripById(id)).filter((d): d is Drip => Boolean(d)),
+    [favIds]
+  );
 
   return (
     <ScreenBackground>

@@ -16,6 +16,8 @@ export const appConfig: AppConfig = {
   supabaseAnonKey: readEnv('EXPO_PUBLIC_SUPABASE_ANON_KEY'),
   revenueCatApiKeyIos: readEnv('EXPO_PUBLIC_REVENUECAT_API_KEY_IOS'),
   revenueCatApiKeyAndroid: readEnv('EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID'),
+  revenueCatEntitlementId: readEnv('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID') ?? 'premium',
+  revenueCatOfferingId: readEnv('EXPO_PUBLIC_REVENUECAT_OFFERING_ID'),
   openAiProxyUrl: readEnv('EXPO_PUBLIC_OPENAI_PROXY_URL'),
   analyticsProvider: readEnv('EXPO_PUBLIC_ANALYTICS_PROVIDER'),
 };

@@ -10,6 +10,7 @@ import { captureRef } from 'react-native-view-shot';
 
 import { DropletIcon } from '@/src/components/DropletIcon';
 import { CloseIcon, ShareIcon } from '@/src/components/Icons';
+import { RadialGlow } from '@/src/components/RadialGlow';
 import { getDripById } from '@/src/features/drip/dripService';
 import { useDrip } from '@/src/features/drip/useDrip';
 import { CATEGORY_ACCENT, GLASS_BG_STRONG, GLASS_BORDER, LIGHT_BUTTON_GRADIENT, TEXT_DIM, hexToRgba } from '@/src/theme/colors';
@@ -87,7 +88,9 @@ export default function ShareScreen() {
         </View>
 
         <View style={styles.cardWrap}>
-          <View style={[styles.glow, { backgroundColor: hexToRgba(accent, 0.45) }]} />
+          <View style={styles.glow}>
+            <RadialGlow width={230} height={200} color={accent} opacity={0.75} />
+          </View>
           <View ref={cardRef} collapsable={false} style={styles.card}>
             <LinearGradient
               colors={[hexToRgba(accent, 0.22), '#171e3a', '#0b1022']}
@@ -179,8 +182,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 230,
     height: 200,
-    borderRadius: 115,
-    opacity: 0.6,
   },
   card: {
     width: 300,
